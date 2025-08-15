@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Results - Disease Prediction System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Results Header -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-5 mb-3">
+                <i class="fas fa-chart-line text-success me-3"></i>
+                Prediction Results
+            </h1>
+        </div>
+    </div>
+
+    <!-- Selected Symptoms -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-list-check me-2"></i>
+                        Selected Symptoms
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for symptom in selected_symptoms %}
+                        <div class="col-md-6 col-lg-4 mb-2">
+                            <span class="badge bg-info me-1">
+                                <i class="fas fa-check me-1"></i>{{ symptom }}
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prediction Result -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-success shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="card-title mb-0">
+                        <i class="fas fa-diagnoses me-2"></i>
+                        Predicted Condition
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <h2 class="text-success">{{ predicted_disease }}</h2>
+                        <div class="mt-3">
+                            <span class="badge bg-success fs-6">
+                                Confidence: {{ "%.1f" | format(confidence * 100) }}%
+                            </span>
+                        </div>
+                        
+                        <!-- Confidence Bar -->
+                        <div class="progress mt-3" style="height: 10px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: {{ confidence * 100 }}%" 
+                                 aria-valuenow="{{ confidence * 100 }}" 
+                                 aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if disease_info.description %}
+                    <div class="alert alert-light">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-info-circle me-2"></i>About This Condition
+                        </h6>
+                        <p class="mb-0">{{ disease_info.description }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prevention Tips -->
+    {% if disease_info.prevention %}
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Prevention Tips
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for tip in disease_info.prevention %}
+                        <li class="list-group-item d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            <span>{{ tip }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Treatment Recommendations -->
+    {% if disease_info.treatment %}
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-pills me-2"></i>
+                        General Treatment Guidelines
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for treatment in disease_info.treatment %}
+                        <li class="list-group-item d-flex align-items-start">
+                            <i class="fas fa-capsules text-danger me-3 mt-1"></i>
+                            <span>{{ treatment }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Important Notice -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="alert alert-danger">
+                <h6 class="alert-heading">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Important Medical Notice
+                </h6>
+                <p class="mb-2">
+                    <strong>This prediction is for educational purposes only.</strong> 
+                    The AI system provides insights based on symptom patterns but cannot replace professional medical diagnosis.
+                </p>
+                <ul class="mb-0">
+                    <li>Always consult with a qualified healthcare provider for accurate diagnosis</li>
+                    <li>Seek immediate medical attention for severe or persistent symptoms</li>
+                    <li>This tool should not be used for emergency medical situations</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <a href="{{ url_for('index') }}" class="btn btn-outline-info">
+                    <i class="fas fa-redo me-2"></i>Check New Symptoms
+                </a>
+                <button type="button" class="btn btn-info" onclick="window.print()">
+                    <i class="fas fa-print me-2"></i>Print Results
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

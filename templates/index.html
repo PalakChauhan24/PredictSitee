@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Symptom Checker - Disease Prediction System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-user-md text-info me-3"></i>
+                AI-Powered Disease Prediction
+            </h1>
+            <p class="lead text-muted">
+                Select your symptoms below and our machine learning models will help predict possible conditions.
+                Remember, this is for educational purposes only and should not replace professional medical advice.
+            </p>
+        </div>
+    </div>
+
+    <!-- Symptom Selection Form -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="card-title mb-0">
+                        <i class="fas fa-clipboard-list me-2"></i>
+                        Select Your Symptoms
+                    </h4>
+                </div>
+                
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('predict') }}" id="symptomForm">
+                        <div class="row">
+                            {% for symptom_code, symptom_name in symptoms %}
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" 
+                                           name="symptoms" value="{{ symptom_code }}" 
+                                           id="symptom_{{ loop.index }}">
+                                    <label class="form-check-label" for="symptom_{{ loop.index }}">
+                                        {{ symptom_name }}
+                                    </label>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-outline-secondary me-md-2" onclick="clearForm()">
+                                <i class="fas fa-eraser me-2"></i>Clear All
+                            </button>
+                            <button type="submit" class="btn btn-info">
+                                <i class="fas fa-search me-2"></i>Predict Disease
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Information Cards -->
+    <div class="row mt-5">
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 border-info">
+                <div class="card-body text-center">
+                    <i class="fas fa-brain fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">AI-Powered</h5>
+                    <p class="card-text small">
+                        Our system uses multiple machine learning algorithms including Random Forest, 
+                        Naive Bayes, and Logistic Regression for accurate predictions.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 border-success">
+                <div class="card-body text-center">
+                    <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Safe & Secure</h5>
+                    <p class="card-text small">
+                        Your health information is processed securely and is not stored. 
+                        All predictions are made in real-time without data retention.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 border-warning">
+                <div class="card-body text-center">
+                    <i class="fas fa-graduation-cap fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Educational</h5>
+                    <p class="card-text small">
+                        This tool provides educational insights and prevention tips. 
+                        Always consult healthcare professionals for medical decisions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
